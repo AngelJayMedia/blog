@@ -26,21 +26,70 @@
             <div class="overflow-hidden bg-white shadow-xl sm:rounded-lg">
 
                 <div class="p-6">
-                    <form action="{{ route('posts.store') }}" method="POST">
-                        @csrf
 
-                        <div>
-                            <x-jet-label for="name" value="{{ __('Name') }}" />
-                            <x-jet-input id="name" class="block w-full mt-1" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-                            <span class="mt-2 text-xs text-gray-500">Maximum 200 characters</span>
-                            <x-jet-input-error for="name" class="mt-2" />
+                    <x-form action="{{ route('posts.store') }}" has-files>
+
+                        <div class="space-y-6">
+
+                            {{-- Cover Image --}}
+                            <div>
+                                <x-jet-label for="cover_image" value="{{ __('Cover Image') }}" />
+                                <input type="file" name="cover_image" id="cover_image">
+                                <span class="mt-2 text-xs text-gray-500">File type:jpg,png only</span>
+                                <x-jet-input-error for="title" class="mt-2" />
+                            </div>
+
+                            {{-- Title --}}
+                            <div>
+                                <x-jet-label for="title" value="{{ __('Title') }}" />
+                                <x-jet-input id="title" class="block w-full mt-1" type="text" name="title" :value="old('title')" autofocus autocomplete="title" />
+                                <span class="mt-2 text-xs text-gray-500">Maximum 200 characters</span>
+                                <x-jet-input-error for="title" class="mt-2" />
+                            </div>
+
+                            {{-- Category --}}
+                            <div>
+                                <x-jet-label for="category_id" value="{{ __('Categories') }}" />
+                                <select name="category_id" id="category_id" class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+
+                                    <option value="">Please select a category</option>
+                                    @foreach ($categories as $category )
+                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            {{-- Body --}}
+                            <div>
+                                <x-jet-label for="body" value="{{ __('Body') }}" />
+                                <x-trix name="body" styling="overflow-y-scroll h-96"></x-trix>
+                                <x-jet-input-error for="body" class="mt-2" />
+                            </div>
+
+                            {{-- Schedule --}}
+                            <div>
+                                <x-jet-label for="published_at" value="{{ __('Schedule Date') }}" />
+                                <x-pikaday name="published_at" />
+                            </div>
+
+                            {{-- Tags --}}
+                            <x-tags :tags="$tags" />
+
+                            {{-- Meta Description --}}
+                            <div>
+                                <x-jet-label for="meta_description" value="{{ __('Meta description') }}" />
+                                <x-trix name="meta_description" styling="overflow-y-scroll h-40"></x-trix>
+                                <x-jet-input-error for="meta_description" class="mt-2" />
+                            </div>
+
                         </div>
+
 
                         <x-jet-button class="mt-12">
                             {{ __('Create') }}
                         </x-jet-button>
 
-                    </form>
+                    </x-form>
                 </div>
             </div>
         </div>
