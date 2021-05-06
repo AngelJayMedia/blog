@@ -80,7 +80,7 @@ class CategoryController extends Controller
         $category->slug = Str::slug($request->name);
         $category->save();
 
-        return redirect()->route('categories.index')->with('success', 'Category succesfully updated');
+        return redirect()->route('categories.index')->with('success', 'Category succesfully updated!');
     }
 
     /**
