@@ -28,15 +28,14 @@
                 <div class="p-6">
 
                     <x-form action="{{ route('posts.store') }}" has-files>
-
                         <div class="space-y-6">
 
                             {{-- Cover Image --}}
                             <div>
                                 <x-jet-label for="cover_image" value="{{ __('Cover Image') }}" />
-                                <input type="file" name="cover_image" id="cover_image">
+                                <input name="cover_image" type="file" id="cover_image">
                                 <span class="mt-2 text-xs text-gray-500">File type:jpg,png only</span>
-                                <x-jet-input-error for="title" class="mt-2" />
+                                <x-jet-input-error for="cover_image" class="mt-2" />
                             </div>
 
                             {{-- Title --}}
@@ -57,6 +56,7 @@
                                     <option value="{{ $category->id }}">{{ $category->name }}</option>
                                     @endforeach
                                 </select>
+                                <x-jet-input-error for="category_id" class="mt-2" />
                             </div>
 
                             {{-- Body --}}
@@ -69,7 +69,8 @@
                             {{-- Schedule --}}
                             <div>
                                 <x-jet-label for="published_at" value="{{ __('Schedule Date') }}" />
-                                <x-pikaday name="published_at" />
+                                <x-pikaday name="published_at" format="YYYY-MM-DD" />
+                                <x-jet-input-error for="published_at" class="mt-2" />
                             </div>
 
                             {{-- Tags --}}

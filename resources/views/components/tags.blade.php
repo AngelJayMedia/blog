@@ -25,6 +25,7 @@
         <option value="{{ $tag->id }}">{{ $tag->name }}</option>
         @endforeach
     </select>
+    <x-jet-input-error for="tags" class="mt-2" />
 </div>
 
 <div x-data="dropdown()" x-init="loadOptions()" class="w-full mx-auto">
