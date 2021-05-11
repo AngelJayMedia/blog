@@ -19,7 +19,7 @@ class Delete extends Component
 
     public function deletePost()
     {
-        File::delete(public_path('/img/blog/' . $this->post->cover_image));
+        File::delete(storage_path('app/public/images/' . $this->post->cover_image));
         $this->post->delete();
 
         session()->flash('success', 'Post Succesfully Deleted');

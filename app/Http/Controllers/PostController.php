@@ -8,8 +8,10 @@ use App\Models\Category;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
 use App\Http\Requests\StorePostRequest;
+use App\Http\Requests\UpdatePostRequest;
 
 class PostController extends Controller
 {
@@ -44,7 +46,6 @@ class PostController extends Controller
      */
     public function store(StorePostRequest $request)
     {
-        $tags                   = explode(',', $request->tags);
         $post                   = new Post;
         $post->title            = $request->title;
         $post->slug             = Str::slug($request->title);
@@ -66,7 +67,7 @@ class PostController extends Controller
         };
 
         $post->save();
-        $post->tags()->sync($tags);
+        $post->tags()->sync($request->tags);
 
         return redirect()->route('posts.index')->with('success', 'Post created succesfully!');
     }
@@ -90,7 +91,11 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        //
+        $tags           = Tag::all();
+        $categories     = Category::all();
+        $oldTags        = $post->tags->pluck('id')->toArray();
+
+        return view('dashboard.posts.edit', compact('post', 'tags', 'categories', 'oldTags'));
     }
 
     /**
@@ -100,19 +105,32 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Post $post)
+    public function update(UpdatePostRequest $request, Post $post)
     {
-        //
-    }
+        $post->title            = $request->title;
+        $post->slug             = Str::slug($request->title);
+        $post->body             = $request->body;
+        $post->author_id        = Auth::user()->id;
+        $post->category_id      = $request->category_id;
+        $post->published_at     = $request->published_at;
+        $post->meta_description = $request->meta_description;
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Post  $post
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Post $post)
-    {
-        //
+        if ($request->hasFile('cover_image')) {
+            $oldFileName    = $post->cover_image;
+            $image          = $request->file('cover_image');
+            $imageName      = $image->getClientOriginalName();
+            $imageNewName   = explode('.', $imageName)[0];
+            $fileExtention  = time() . '.' . $imageNewName . '.' . $image->getClientOriginalExtension();
+            $location       = storage_path('app/public/images/' . $fileExtention);
+            Image::make($image)->resize(1200, 630)->save($location);
+            $post->cover_image = $fileExtention;
+
+            File::delete(storage_path('app/public/images/' . $oldFileName));
+        };
+
+        $post->save();
+        $post->tags()->sync($request->tags);
+
+        return redirect()->route('posts.index')->with('success', 'Post successfully updated!');
     }
 }

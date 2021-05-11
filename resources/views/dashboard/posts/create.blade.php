@@ -61,7 +61,7 @@
 
                             {{-- Body --}}
                             <div>
-                                <x-jet-label for="body" value="{{ __('Body') }}" />
+                                c
                                 <x-trix name="body" styling="overflow-y-scroll h-96"></x-trix>
                                 <x-jet-input-error for="body" class="mt-2" />
                             </div>
@@ -74,7 +74,14 @@
                             </div>
 
                             {{-- Tags --}}
-                            <x-tags :tags="$tags" />
+                            <div>
+                                <x-jet-label for="tags" value="{{ __('Body') }}" />
+                                <select name="tags[]" id="create-post" multiple x-data="{}" x-init="function () { choices($el) }">
+                                    @foreach ($tags as $tag )
+                                    <option value="{{ $tag->id }}">{{ $tag->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
 
                             {{-- Meta Description --}}
                             <div>

@@ -56,6 +56,5 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'dashboard'], function () {
         Route::get('{post:slug}/edit', [PostController::class, 'edit'])->name('edit');
         Route::put('{post:slug}', [PostController::class, 'update'])->name('update');
         Route::get('{post:slug}', [PostController::class, 'show'])->name('show');
-        Route::delete('{post:slug}/delete', [PostController::class, 'destroy'])->name('delete');
     });
 });

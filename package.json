@@ -19,5 +19,8 @@
         "postcss": "^8.1.14",
         "postcss-import": "^14.0.1",
         "tailwindcss": "^2.0.1"
+    },
+    "dependencies": {
+        "choices.js": "^9.0.1"
     }
 }
