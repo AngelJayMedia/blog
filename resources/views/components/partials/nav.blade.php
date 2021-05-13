@@ -26,6 +26,10 @@
         <div class="z-20 flex-grow hidden w-full p-4 mt-2 text-black bg-white lg:flex lg:items-center lg:w-auto lg:mt-0 lg:bg-transparent lg:p-0" id="nav-content">
             <ul class="items-center justify-end flex-1 list-reset lg:flex">
 
+                <li class="mr-3">
+                    <a class="inline-block px-4 py-2 text-black no-underline hover:text-gray-800 hover:text-underline" href="{{ route('blog') }}">Blog</a>
+                </li>
+
                 @auth
                 {{-- Dashboard --}}
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
@@ -42,6 +46,7 @@
                     <a class="inline-block px-4 py-2 text-black no-underline hover:text-gray-800 hover:text-underline" href="{{ route('register') }}">Register</a>
                 </li>
                 @endauth
+
             </ul>
 
             @auth
